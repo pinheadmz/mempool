@@ -1,37 +1,59 @@
 version: "3.7"
 
 services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt/live/boss2025.xyz/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/boss2025.xyz/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - web
+    restart: on-failure
+
   web:
     environment:
       FRONTEND_HTTP_PORT: "8080"
       BACKEND_MAINNET_HTTP_HOST: "api"
+      MAINNET_ENABLED: "false"
+      SIGNET_ENABLED: "true"
     image: mempool/frontend:latest
-    user: "1000:1000"
+    user: "0:0"
     restart: on-failure
     stop_grace_period: 1m
     command: "./wait-for db:3306 --timeout=720 -- nginx -g 'daemon off;'"
     ports:
-      - 80:8080
+      - 8080:8080
   api:
     environment:
+      MEMPOOL_NETWORK: "signet"
       MEMPOOL_BACKEND: "none"
-      CORE_RPC_HOST: "172.27.0.1"
-      CORE_RPC_PORT: "8332"
-      CORE_RPC_USERNAME: "mempool"
-      CORE_RPC_PASSWORD: "mempool"
+      CORE_RPC_HOST: "172.17.0.1"
+      CORE_RPC_PORT: "16312"
+      CORE_RPC_USERNAME: ""
+      CORE_RPC_PASSWORD: ""
+      CORE_RPC_COOKIE: true
+      CORE_RPC_COOKIE_PATH: "/cookie/.cookie"
       DATABASE_ENABLED: "true"
       DATABASE_HOST: "db"
       DATABASE_DATABASE: "mempool"
       DATABASE_USERNAME: "mempool"
       DATABASE_PASSWORD: "mempool"
-      STATISTICS_ENABLED: "true"
+      STATISTICS_ENABLED: "false"
+      MEMPOOL_OFFICIAL: "false"
+      AUTOMATIC_POOLS_UPDATE: "false"
+      FIAT_PRICE_ENABLED: "false"
     image: mempool/backend:latest
-    user: "1000:1000"
+    user: "0:0"
     restart: on-failure
     stop_grace_period: 1m
     command: "./wait-for-it.sh db:3306 --timeout=720 --strict -- ./start.sh"
     volumes:
       - ./data:/backend/cache
+      - /root/signet-data/node0/signet:/cookie
   db:
     environment:
       MYSQL_DATABASE: "mempool"
@@ -39,7 +61,7 @@ services:
       MYSQL_PASSWORD: "mempool"
       MYSQL_ROOT_PASSWORD: "admin"
     image: mariadb:10.5.21
-    user: "1000:1000"
+    user: "0:0"
     restart: on-failure
     stop_grace_period: 1m
     volumes:
