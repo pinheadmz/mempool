@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OP_RETURN Feed</title>
+    <style>
+        :root {
+            --bg: #0b1020;
+            --panel: #141a2e;
+            --text: #dbe2ff;
+            --muted: #8fa0ff;
+            --accent: #2dd4ff;
+            --border: #222a44;
+            --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        header {
+            padding: 16px 24px;
+            background: linear-gradient(180deg, #111736, #0b1020);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        main {
+            padding: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .entry {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .txid {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .txid:hover {
+            text-decoration: underline;
+        }
+
+        .opreturn {
+            margin-top: 12px;
+            font-family: var(--mono);
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .meta {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+<header>
+    OP_RETURN stream
+</header>
+
+<main id="entries">
+<!-- INSERT_ENTRIES_HERE -->
+</main>
+
+</body>
+</html>
