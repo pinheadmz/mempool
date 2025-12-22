@@ -22,7 +22,7 @@ services:
       MAINNET_ENABLED: "false"
       SIGNET_ENABLED: "true"
       ROOT_NETWORK: "signet"
-    image: mempool/frontend:latest
+    image: mempool/frontend:v3.2.1
     user: "0:0"
     restart: on-failure
     stop_grace_period: 1m
@@ -47,7 +47,7 @@ services:
       MEMPOOL_OFFICIAL: "false"
       AUTOMATIC_POOLS_UPDATE: "false"
       FIAT_PRICE_ENABLED: "false"
-    image: mempool/backend:latest
+    image: mempool/backend:v3.2.1
     user: "0:0"
     restart: on-failure
     stop_grace_period: 1m
